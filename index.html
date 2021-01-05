@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="Generator" content="EditPlus®">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<title>Document</title>
+
+<link rel="stylesheet" href="../css/reset.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.easing.1.3.js"></script>
+
+
+
+<style>
+#scroll {position: fixed;top: 50%;right: 30px;z-index: 999;}
+#scroll .scroll_item {border: 3px solid #FFF;width: 10px;height: 10px;margin: 5px;cursor: pointer;}
+#scroll .scroll_item:hover{background: #FFF;}
+#scroll .scroll_item_active {border: 3px solid #FFF;width: 10px;height: 10px;margin: 5px;background-color: #FFF;}
+#first {width: 100%;height: 800px;background-color: #db9090;top: 0px;}
+#second {width: 100%;height: 800px;background-color: #60c4ac;position: absolute;top: 800px;}
+#third {width: 100%;height: 800px;background-color: #4584d1;position: absolute;top: 1600px;}
+#fourth {width: 100%;height: 800px;background-color: #999;position: absolute;top: 2400px;}
+</style>
+
+</head>
+<body>
+
+
+<div id="scroll">
+	<div data-page="first" class="scroll_item">&nbsp;</div>
+	<div data-page="second" class="scroll_item">&nbsp;</div>
+	<div data-page="third" class="scroll_item">&nbsp;</div>
+	<div data-page="fourth" class="scroll_item">&nbsp;</div>
+</div>
+
+<div id="first"></div>
+<div id="second"></div>
+<div id="third"></div>
+<div id="fourth"></div>
+
+
+
+<script>
+$(function(){
+	$('.scroll_item').on('click', function() {
+		var elem = $('#' + $(this).data('page')),
+				scroll = elem.offset().top;
+		$('body, html').animate({scrollTop : scroll}, 1000);
+		$(this).addClass('scroll_item_active')
+		.siblings('.scroll_item_active')
+		.removeClass('scroll_item_active');
+	});
+
+	$(window).on('scroll', function(e) {
+		var elems = $('#first, #second, #third, #fourth'),
+				scrolled = $(this).scrollTop();
+		var dataPage = elems.filter(function() {
+			return $(this).offset().top + ($(this).height() / 2) >= scrolled;
+		}).first();
+
+		$('.scroll_item[data-page="'+dataPage.prop('id')+'"]').addClass('scroll_item_active')
+		.siblings('.scroll_item_active')
+		.removeClass('scroll_item_active');
+	}).trigger('scroll');
+
+})
+
+</script>
+</body>
+</html>
